@@ -1,0 +1,129 @@
+<!DOCTYPE>
+<html ng-app="jschallengeApp">
+<head>
+  <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Cabtcha - Need a CAB? You Gotcha!</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
+
+    <!-- Custom Fonts -->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css" type="text/css">
+
+    <!-- Plugin CSS -->
+    <link rel="stylesheet" href="css/animate.min.css" type="text/css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/creative.css" type="text/css">
+	<link rel="stylesheet" href="css/main.css" type="text/css">
+	
+	<link rel="stylesheet" href="css/ngProgress.css">
+	<link rel="stylesheet" href="css/toaster.css">
+	<link rel="stylesheet" href="css/angular-chart.min.css" type="text/css">
+	<style>
+		[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+		display: none !important;
+		}
+	</style>
+	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body ng-cloak>
+<nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                
+                <a class="navbar-brand page-scroll" href="#page-top">CABTCHA!</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+					
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container-fluid -->
+    </nav>
+
+    <header>
+        <div class="header-content">
+            <div class="header-content-inner">
+			    <h1> The Cabtcha Dashboard </h1>
+                <div class="container" ng-controller="CabsCtrl">
+						<form name="CabForm" novalidate>
+						<table class="table">
+						  <thead>
+							<tr>
+							  <th>Name</th>
+							  <th>Phone</th>
+							  <th>Booking Date</th>
+							  <th>Action</th>
+							  <th>&nbsp;</th>
+							</tr>
+						  </thead>
+						  <tbody>
+							<tr>
+							  <td><input class="form-control" ng-model="cab.name" ng-disabled="cab._id" required="" placeholder="Your Name"></td>
+							  <td><input class="form-control" ng-model="cab.phone" required="" placeholder="Your Phone"></td>
+							  <td>24 hours from booking</td>
+							  <!--<td><label id="bookingDateText" ng-if="!cab._id" class="form-control" ng-model="cab.bookingDate"></td> -->
+							  <td><button class="btn btn-primary" ng-click="add(cab)" ng-if="!cab._id" type="submit" ng-disabled="!CabForm.$valid">Cabtcha!</button>
+								<div class="btn-group">
+								  <button class="btn btn-info" ng-click="update(cab)" ng-if="cab._id" type="submit">Update</button>
+								  <button class="btn" ng-click="deselect()" ng-if="cab._id">Clear</button>
+								</div>
+							  </td>
+							</tr>
+							<tr ng-repeat="cab in cabs | filter:{ cancelled: 0 }">
+							  <td>{{cab.name}}</td>
+							  <td>{{cab.phone}}</td>
+							  <td>{{cab.bookingDate | date:'yyyy-MM-dd HH:mm'}}</td>
+							  <td>
+								<div class="btn-group">
+								  <button class="btn btn-danger" ng-click="remove(cab)">Cancel</button>
+								  <button class="btn btn-warning" ng-click="edit(cab._id)">Edit Your Number</button>
+								</div>
+							  </td>
+							</tr>
+						  </tbody>
+						</table>
+					  </form>
+					    <canvas id="bar" class="chart chart-bar"
+						  chart-data="data" chart-labels="labels">
+					    </canvas>
+						<button class="btn btn-danger" ng-click="removeAll()">Remove All</button>
+					  </div>
+
+            </div>
+        </div>
+    </header>
+
+  
+<div data-loading></div>
+<toaster-container toaster-options="{'time-out': 3000, 'close-button':true, 'animation-class': 'toast-top-center'}"></toaster-container>
+
+<script src="js/angular.min.js"></script>
+<script src="js/angular-resource.min.js"></script>
+<script src="js/angular-animate.min.js"></script>
+<script src="https://rawgit.com/nnnick/Chart.js/master/Chart.min.js"></script>
+<script src="js/angular-chart.min.js"></script>
+<script src="js/ngProgress.min.js"></script>
+<script src="js/toaster.js"></script>
+<script src="app/app.js"></script>
+<script src="app/cabs.js"></script>
+</body>
+</html>
