@@ -45,7 +45,7 @@ var sendSms = function(cab)
 var bookCab = function(start, end, phone) {
 	
 	var url = 'http://jschallenge.smove.sg/provider/1/availability?book_start=' + start + '&book_end=' + end;
-	return true; //REMOVE this, when implemented in smove network. Getting CORS not enabled
+	//return true; //REMOVE this, when implemented in smove network. Getting CORS not enabled
 	  $http.get(url).success(function(result) {
 		console.log('Result from the API call:', result);
 		return true;

@@ -1,23 +1,27 @@
 # jschallenge
 
-Issues Faced :- The API is not CORS enabled. Unable to call from localhost
+### Application Features :- 
 
-Features :- 
+1. Instant Cab Booking and Confirmation through SMS
+2. Booking Cancellation
+3. Real Time Booking Analytics 
+4. Clear historical data
+5. Edit contact details
 
-1. Book a Cab
-2. Cancel a Booking
-3. Edit your Number in the system
-4. Get a text on successful Booking
-5. Booking Statistics Data Analytics
-6. Clear the Database
+### Tech Stack
+
+--> Frontend developed in Angular.js, HTML5, CSS3, Bootstrap
+
+--> Backend Restful API developed in Node.js using Express.js framework
+
+--> MongoDB has been used for data storage
 
 ### Build & development
 
-Run npm install
+--> Run npm install
 
-Used MongoDb
+--> Run mongod.exe
 
-Run mongod.exe
+--> Run node server
 
-Run node server
-
+### Issues Faced :- The API is not CORS enabled. Unable to call from localhost and implement map function as well.
