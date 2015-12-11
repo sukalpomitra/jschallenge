@@ -27,7 +27,7 @@ refresh();
 
 var sendSms = function(cab)
 {
-	var domain = "http://localhost:8080"
+	var domain = "http://localhost:9000"
 	var url = domain + '/send?phone='+cab.phone+'&name='+cab.name;
 	console.log(url);
 	$http.get(url).success(function(result) {
@@ -42,13 +42,15 @@ var sendSms = function(cab)
 	});
 }
 
-var bookCab = function(start, end, phone) {
+var bookCab = function(start, end, cab) {
 	
 	var url = 'http://jschallenge.smove.sg/provider/1/availability?book_start=' + start + '&book_end=' + end;
 	//return true; //REMOVE this, when implemented in smove network. Getting CORS not enabled
 	  $http.get(url).success(function(result) {
 		console.log('Result from the API call:', result);
-		return true;
+		cab.bookingDate = start;
+		cab.cancelled = 0;
+		sendSms(cab);
 	  }).error(function(err) {
 		// Hum, this is odd ... contact us...
 		console.error(err);
@@ -59,12 +61,7 @@ var bookCab = function(start, end, phone) {
 $scope.add = function(cab) {
 	var start = Date.now() + 24 * 3600 * 1000;
 	var end = start + 2 * 3600 * 1000;
-	if (bookCab(start, end, cab.phone))
-	{
-	  cab.bookingDate = start;
-	  cab.cancelled = 0;
-	  sendSms(cab);
-	}
+	bookCab(start, end, cab);
 };
 
 $scope.update = function(cab) {

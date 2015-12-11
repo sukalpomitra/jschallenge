@@ -36,7 +36,7 @@ app.use(function(req, res, next) {
 });
 
 // Start server
-var port = process.env.OPENSHIFT_NODEJS_PORT || 8080
+var port = process.env.OPENSHIFT_NODEJS_PORT || 9000
 , ip = process.env.OPENSHIFT_NODEJS_IP || "127.0.0.1";
 app.listen(port, ip, function() {
   console.log('Express server listening on %d', port);

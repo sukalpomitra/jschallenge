@@ -13,11 +13,11 @@ module.exports.sendSms = function(request, response) {
 //  mediaUrl: imageUrl
   }, function(err, data) {
     if (err) {
-      console.error('Could not notify administrator');
+      console.error('Could not deliver Message');
       console.error(err);
 	  response.send(500,err)
     } else {
-      console.log('Administrator notified');
+      console.log('Message Delivered');
 	  response.send('Message Delivered')
     }
   });
