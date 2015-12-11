@@ -3,10 +3,11 @@
 ### Application Features :- 
 
 1. Instant Cab Booking and Confirmation through SMS
-2. Booking Cancellation
-3. Real Time Booking Analytics 
-4. Clear historical data
-5. Edit contact details
+2. Show booked car locations on map
+3. Booking Cancellation
+4. Real Time Booking Analytics 
+5. Clear historical data
+6. Edit contact details
 
 ### Tech Stack
 
@@ -25,3 +26,4 @@
 --> Run node server
 
 ### Issues Faced :- The API is not CORS enabled. Unable to call from localhost and implement map function as well.
+### Update:- CORS issue resolved by usng port 9000 instead of 8080.

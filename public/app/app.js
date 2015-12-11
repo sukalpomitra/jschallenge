@@ -1,4 +1,4 @@
-var app = angular.module('jschallengeApp', ['ngResource', 'ngProgress', 'ngAnimate', 'toaster','chart.js']);
+var app = angular.module('jschallengeApp', ['ngResource', 'ngProgress','ngAnimate', 'toaster','chart.js','uiGmapgoogle-maps']);
 app.config(function ($httpProvider) {
   $httpProvider.interceptors.push('myHttpInterceptor');
 });

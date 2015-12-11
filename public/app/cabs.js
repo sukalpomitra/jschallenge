@@ -2,7 +2,7 @@ app.controller('CabsCtrl', function($scope, Cab, ngProgress, toaster, $http) {
 
 $scope.cab = new Cab();
 
-var refresh = function() {
+var refresh = function(apiResponse) {
   //$scope.cabs = Cab.query(); 
   $scope.cabs = Cab.query(function (result) {
 	    var booking = [];
@@ -15,26 +15,44 @@ var refresh = function() {
 				cancel.push(result[i]);
 		}
 		
-		$scope.data = [[booking.length],[cancel.length],[result.length]];
-		
+		$scope.data = [[booking.length],[booking.length + cancel.length],[cancel.length],[result.length + cancel.length]];
+		$scope.map = { center: { latitude: 1.3, longitude: 103.8 }, zoom: 11 };
+		$scope.markersOptions = { animation: google.maps.Animation.DROP};
+		if (apiResponse != null)
+		{
+			
+			$scope.markers = [];
+			angular.forEach(apiResponse, function(obj, key) {
+				$scope.markers.push({
+					id: obj.id,
+					coords: {
+					'latitude': obj.latitude,
+					'longitude': obj.longitude
+					}
+				});
+			});
+			toaster.success("The car locations are shown in the map");
+		}
+		else
+		{
+			$scope.markers = [];
+		}
   });
   $scope.cab ="";
   $scope.labels = ['Booking Statistics'];
-  $scope.series = ['Series A'];
+  $scope.series = ['Current Bookings', 'Total Bookings Made', 'Total Cancellations','Total Transactions'];
   
 }
-refresh();
+refresh(null);
 
-var sendSms = function(cab)
+var sendSms = function(cab, apiResponse)
 {
 	var domain = "http://localhost:9000"
 	var url = domain + '/send?phone='+cab.phone+'&name='+cab.name;
-	console.log(url);
 	$http.get(url).success(function(result) {
-		console.log('Done');
 		toaster.success("Your Cabtcha was successful");
 		Cab.save(cab,function(cab){
-			refresh();
+			refresh(apiResponse);
 		});
 	}).error(function(err) {
 		console.log('error');
@@ -47,10 +65,9 @@ var bookCab = function(start, end, cab) {
 	var url = 'http://jschallenge.smove.sg/provider/1/availability?book_start=' + start + '&book_end=' + end;
 	//return true; //REMOVE this, when implemented in smove network. Getting CORS not enabled
 	  $http.get(url).success(function(result) {
-		console.log('Result from the API call:', result);
 		cab.bookingDate = start;
 		cab.cancelled = 0;
-		sendSms(cab);
+		sendSms(cab, result);
 	  }).error(function(err) {
 		// Hum, this is odd ... contact us...
 		console.error(err);
@@ -66,14 +83,14 @@ $scope.add = function(cab) {
 
 $scope.update = function(cab) {
   cab.$update(function(){
-    refresh();
+    refresh(null);
   });
 };
 
 $scope.remove = function(cab) {
   cab.cancelled = 1;
   cab.$update(function(){
-    refresh();
+    refresh(null);
   });
 };
 
@@ -82,7 +99,7 @@ $scope.removeAll = function() {
 		value.$delete(function(){
 		 });
 	});
-	refresh();		
+	refresh(null);		
 };
 
 $scope.edit = function(id) {

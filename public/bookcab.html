@@ -58,69 +58,80 @@
         </div>
         <!-- /.container-fluid -->
     </nav>
-
-    <header>
-        <div class="header-content">
-            <div class="header-content-inner">
-			    <h1> The Cabtcha Dashboard </h1>
-                <div class="container" ng-controller="CabsCtrl">
-						<form name="CabForm" novalidate>
-						<table class="table">
-						  <thead>
-							<tr>
-							  <th>Name</th>
-							  <th>Phone</th>
-							  <th>Booking Date</th>
-							  <th>Action</th>
-							  <th>&nbsp;</th>
-							</tr>
-						  </thead>
-						  <tbody>
-							<tr>
-							  <td><input class="form-control" ng-model="cab.name" ng-disabled="cab._id" required="" placeholder="Your Name"></td>
-							  <td><input class="form-control" ng-model="cab.phone" required="" placeholder="Your Phone"></td>
-							  <td>24 hours from booking</td>
-							  <!--<td><label id="bookingDateText" ng-if="!cab._id" class="form-control" ng-model="cab.bookingDate"></td> -->
-							  <td><button class="btn btn-primary" ng-click="add(cab)" ng-if="!cab._id" type="submit" ng-disabled="!CabForm.$valid">Cabtcha!</button>
-								<div class="btn-group">
-								  <button class="btn btn-info" ng-click="update(cab)" ng-if="cab._id" type="submit">Update</button>
-								  <button class="btn" ng-click="deselect()" ng-if="cab._id">Clear</button>
-								</div>
-							  </td>
-							</tr>
-							<tr ng-repeat="cab in cabs | filter:{ cancelled: 0 }">
-							  <td>{{cab.name}}</td>
-							  <td>{{cab.phone}}</td>
-							  <td>{{cab.bookingDate | date:'yyyy-MM-dd HH:mm'}}</td>
-							  <td>
-								<div class="btn-group">
-								  <button class="btn btn-danger" ng-click="remove(cab)">Cancel</button>
-								  <button class="btn btn-warning" ng-click="edit(cab._id)">Edit Your Number</button>
-								</div>
-							  </td>
-							</tr>
-						  </tbody>
-						</table>
-					  </form>
-					    <canvas id="bar" class="chart chart-bar"
-						  chart-data="data" chart-labels="labels">
-					    </canvas>
-						<button class="btn btn-danger" ng-click="removeAll()">Remove All</button>
-					  </div>
-
-            </div>
-        </div>
-    </header>
+	<section class="bg-dashboard">
+		<h1 lass="text-center"> The Cabtcha Dashboard </h1>
+		<div class="container" ng-controller="CabsCtrl">
+				<form name="CabForm" novalidate>
+				<table class="table">
+				  <thead>
+					<tr>
+					  <th>Name</th>
+					  <th>Phone</th>
+					  <th>Booking Date</th>
+					  <th>Action</th>
+					  <th>&nbsp;</th>
+					</tr>
+				  </thead>
+				  <tbody>
+					<tr>
+					  <td><input class="form-control" ng-model="cab.name" ng-disabled="cab._id" required="" placeholder="Your Name"></td>
+					  <td><input class="form-control" ng-model="cab.phone" required="" placeholder="Your Phone"></td>
+					  <td>24 hours from booking</td>
+					  <!--<td><label id="bookingDateText" ng-if="!cab._id" class="form-control" ng-model="cab.bookingDate"></td> -->
+					  <td><button class="btn btn-primary" ng-click="add(cab)" ng-if="!cab._id" type="submit" ng-disabled="!CabForm.$valid">Cabtcha!</button>
+						<div class="btn-group">
+						  <button class="btn btn-info" ng-click="update(cab)" ng-if="cab._id" type="submit">Update</button>
+						  <button class="btn" ng-click="deselect()" ng-if="cab._id">Clear</button>
+						</div>
+					  </td>
+					</tr>
+					<tr ng-repeat="cab in cabs | filter:{ cancelled: 0 }">
+					  <td>{{cab.name}}</td>
+					  <td>{{cab.phone}}</td>
+					  <td>{{cab.bookingDate | date:'yyyy-MM-dd HH:mm'}}</td>
+					  <td>
+						<div class="btn-group">
+						  <button class="btn btn-danger" ng-click="remove(cab)">Cancel</button>
+						  <button class="btn btn-warning" ng-click="edit(cab._id)">Edit Your Number</button>
+						</div>
+					  </td>
+					</tr>
+				  </tbody>
+				</table>
+			  </form>
+			<div class="container">
+				<ui-gmap-google-map center='map.center' zoom='map.zoom'>
+					<ui-gmap-marker ng-repeat="m in markers" coords="m.coords" icon="m.icon" idkey="m.id" options="markersOptions">
+					</ui-gmap-marker>
+				</ui-gmap-google-map>
+			</div>
+			<div class="container">
+				<div class="row">
+				<canvas id="bar" class="chart chart-bar"
+				  chart-data="data" chart-labels="labels" chart-series="series" chart-legend="true">
+				</canvas>
+				<button class="btn btn-danger" ng-click="removeAll()">Remove All</button>
+				</div>
+				
+			</div>
+			
+	  </div>
+	
+	
 
   
 <div data-loading></div>
 <toaster-container toaster-options="{'time-out': 3000, 'close-button':true, 'animation-class': 'toast-top-center'}"></toaster-container>
 
+<script src='//maps.googleapis.com/maps/api/js?sensor=false'></script>
 <script src="js/angular.min.js"></script>
 <script src="js/angular-resource.min.js"></script>
 <script src="js/angular-animate.min.js"></script>
 <script src="https://rawgit.com/nnnick/Chart.js/master/Chart.min.js"></script>
 <script src="js/angular-chart.min.js"></script>
+<script src='js/lodash.js'></script>
+<script src='js/angular-simple-logger.min.js'></script>
+<script src='js/angular-google-maps.min.js'></script>
 <script src="js/ngProgress.min.js"></script>
 <script src="js/toaster.js"></script>
 <script src="app/app.js"></script>
