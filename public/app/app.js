@@ -1,4 +1,5 @@
 var app = angular.module('jschallengeApp', ['ngResource', 'ngProgress','ngAnimate', 'toaster','chart.js','uiGmapgoogle-maps']);
+
 app.config(function ($httpProvider) {
   $httpProvider.interceptors.push('myHttpInterceptor');
 });
@@ -50,3 +51,46 @@ app.factory('Cab', function($resource) {
     }
   });
 });
+
+app.factory('cabService', ['$http', '$q', function($http, $q){
+  var obj = {};
+  obj.carLocs = [];
+  obj.cab = {};
+  var url = 'http://jschallenge.smove.sg/provider/1/availability?';
+
+  obj.bookCab = function(start, end, cab){
+    obj.cab = cab;
+    url = url + 'book_start=' + start + '&book_end=' + end;
+    return $http.get(url)
+      .success(function(result) {
+        angular.copy(result, obj.carLocs);
+      });
+
+      return deferred.promise;
+  }
+
+  obj.sendSMS = function(){
+    var domain = "http://localhost:9000"
+    var url = domain + '/send?phone='+ obj.cab.phone+'&name='+ obj.cab.name;
+    return $http.get(url).success(function(result) {
+      });
+  }
+
+  obj.decorateMap = function(cabs)
+  {
+      var booking = [ ];
+      var cancel = [];
+      for (var i=0;i < cabs.length; i++)
+      {
+        if (cabs[i].cancelled == 0)
+          booking.push(cabs[i]);
+        else
+          cancel.push(cabs[i]);
+      }
+      
+      return [[booking.length],[booking.length + cancel.length],[cancel.length],[cabs.length + cancel.length]];
+  }
+
+  return obj;
+}]);
+
